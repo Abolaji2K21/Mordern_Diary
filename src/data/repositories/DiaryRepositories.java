@@ -13,3 +13,6 @@ public interface DiaryRepositories {
     void delete(Diary diary);
 
 }
+
+
+
