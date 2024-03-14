@@ -7,10 +7,10 @@ public class Entry {
     private String title;
     private String body;
     private final LocalDate dateCreated = LocalDate.now();
-    private String author;
+    private String username;
 
 
-  public Entry(int entry_Id, String title, String body,String author) {
+  public Entry(int entry_Id, String title, String body,String username) {
       if (entry_Id <= 0 ){
           throw new IllegalArgumentException("Entry ID must be a positive integer");
       }
@@ -24,7 +24,7 @@ public class Entry {
       this.entry_Id = entry_Id;
       this.title = title;
       this.body = body;
-      this.author = author;
+      this.username = username;
   }
 
   public int getEntry_Id() {
@@ -51,6 +51,11 @@ public class Entry {
           throw new IllegalArgumentException("Body cannot be null or empty");
       }
       this.body = body;
+  }
+
+  @Override
+  public String toString(){
+      return String.format("Entry ID: %d, Title: %s, Body: %s, Author: %s", entry_Id, title, body, username);
   }
 
 }
