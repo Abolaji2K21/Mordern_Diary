@@ -27,7 +27,7 @@ public class DiaryRepositoriesImplement implements DiaryRepositories{
 
     @Override
     public long count() {
-        return diaries.size();
+        return 0;
     }
 
     @Override
