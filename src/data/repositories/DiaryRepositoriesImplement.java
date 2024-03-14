@@ -8,12 +8,11 @@ import java.util.List;
 public class DiaryRepositoriesImplement implements DiaryRepositories{
 
 
-    private List<Diary> diaries = new ArrayList<>();
+//    private List<Diary> diaries = new ArrayList<>();
 
-//    public Diary save(Diary diary) {
-//       diaries.add(diary);
-//
-//    }
+    public Diary save(Diary diary) {
+        return null;
+    }
 
 
     @Override
