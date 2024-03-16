@@ -8,7 +8,7 @@ import java.util.List;
 public class DiaryRepositoriesImplement implements DiaryRepositories{
 
 
-//    private List<Diary> diaries = new ArrayList<>();
+    private List<Diary> diaries = new ArrayList<>();
 
     public Diary save(Diary diary) {
         return null;
@@ -29,6 +29,8 @@ public class DiaryRepositoriesImplement implements DiaryRepositories{
     public long count() {
         return 0;
     }
+
+
 
     @Override
     public void delete(String username) {

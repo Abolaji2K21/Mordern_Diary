@@ -4,20 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Diary {
-    private final String username;
-    private final String password;
+    private String username;
+    private String password;
+    private int id;
     private final List<Entry> entries = new ArrayList<>();
 
-    public Diary(String username, String password) {
-        if (username == null || username.isEmpty()) {
-            throw new IllegalArgumentException("Username cannot be null or empty");
-        }
-        if (password == null || password.isEmpty()) {
-            throw new IllegalArgumentException("Password cannot be null or empty");
-        }
 
+    public Diary() {}
+
+    public Diary(String username, String password, int id) {
         this.username = username;
         this.password = password;
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -27,5 +33,14 @@ public class Diary {
     public String getPassword() {
         return password;
     }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
 
 }
