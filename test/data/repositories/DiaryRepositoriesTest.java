@@ -7,12 +7,86 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DiaryRepositoriesTest {
 
-//    @Test
-//    void testThatICanSave(){
-//        DiaryRepositoriesImplement myRepositories = new DiaryRepositoriesImplement();
-//        Diary myDairy = new Diary("userName","password");
-//        myRepositories.save(myDairy);
-//        assertEquals(1L, myRepositories.count());
-//    }
+
+    @Test
+    void testThatMyDefaultDiaryRepositoryIsZero() {
+        DiaryRepositoriesImplement myRepositories = new DiaryRepositoriesImplement();
+        assertEquals(0L, myRepositories.count());
+
+    }
+
+    @Test
+     void testThatMyDefaultDiaryRepositoryIsZeroIfIDontSave() {
+        DiaryRepositoriesImplement myRepositories = new DiaryRepositoriesImplement();
+        Diary myDairy = new Diary("userName","password");
+        assertEquals(0L, myRepositories.count());
+    }
+    @Test
+    void testThatICanSaveOneDiary(){
+        DiaryRepositoriesImplement myRepositories = new DiaryRepositoriesImplement();
+        Diary myDairy = new Diary("userName","password");
+        myRepositories.save(myDairy);
+        assertEquals(1L, myRepositories.count());
+    }
+
+   @Test
+   void testThatMyICanSaveMultipleDiary() {
+        DiaryRepositoriesImplement myRepositories = new DiaryRepositoriesImplement();
+       Diary myDairy = new Diary("userName","password");
+       Diary mohDiary = new Diary("Ayinla","password");
+       myRepositories.save(mohDiary);
+       myRepositories.save(myDairy);
+       assertEquals(2L, myRepositories.count());
+
+   }
+
+    @Test
+    public void testSetAndGetId() {
+        Diary myDairy = new Diary();
+        myDairy.setId(1);
+        assertEquals(1, myDairy.getId());
+    }
+
+    @Test
+    public void testSetAndGetUsername() {
+        Diary myDairy = new Diary();
+        myDairy.setUsername("Abike");
+        assertEquals("Abike", myDairy.getUsername());
+    }
+
+    @Test
+    public void testFindDiaryByUsername() {
+        DiaryRepositoriesImplement myRepositories = new DiaryRepositoriesImplement();
+        Diary myDairy = new Diary("userName","password");
+        myRepositories.save(myDairy);
+        assertEquals(myDairy,myRepositories.findById("userName"));
+    }
+
+    @Test
+    public void testFindDiaryByNonexistentUsername() {
+        DiaryRepositoriesImplement myRepositories = new DiaryRepositoriesImplement();
+        assertNull(myRepositories.findById("Nonexistent"));
+    }
+
+    @Test
+    public void testFindAllDiaries() {
+        DiaryRepositoriesImplement myRepositories = new DiaryRepositoriesImplement();
+        Diary myDiary = new Diary("userName","password");
+        Diary dayoDiary = new Diary("Adisa", "password");
+        Diary mohDiary = new Diary("Ayinla", "password");
+        Diary abikeDiary = new Diary("Abike", "password");
+        myRepositories.save(myDiary);
+        myRepositories.save(dayoDiary);
+        myRepositories.save(mohDiary);
+        myRepositories.save(abikeDiary);
+        Diary[] expected = {myDiary, dayoDiary, mohDiary, abikeDiary};
+        Diary[] actual = myRepositories.findAll().toArray(new Diary[0]);
+
+        assertArrayEquals(expected, actual);
+    }
+
+
+
+
 
 }
