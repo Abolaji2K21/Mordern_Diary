@@ -17,7 +17,7 @@ public class EntryRepositoryImplement implements EntryRepositories{
     }
 
     @Override
-    public Entry findById(String username) {
+    public Entry findById(int id) {
         return null;
     }
 

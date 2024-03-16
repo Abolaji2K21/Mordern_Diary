@@ -12,10 +12,9 @@ public class Diary {
 
     public Diary() {}
 
-    public Diary(String username, String password, int id) {
+    public Diary(String username, String password) {
         this.username = username;
         this.password = password;
-        this.id = id;
     }
 
     public int getId() {
