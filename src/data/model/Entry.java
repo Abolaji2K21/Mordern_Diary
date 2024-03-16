@@ -9,6 +9,8 @@ public class Entry {
     private LocalDateTime dateCreated = LocalDateTime.now();
     private String username;
 
+    public Entry() {
+    }
 
   public Entry(int entry_Id, String title, String body,String username) {
       this.entry_Id = entry_Id;
@@ -29,7 +31,11 @@ public class Entry {
       return body;
   }
 
-  public void setTitle(String title) {
+    public void setEntry_Id(int entry_Id) {
+        this.entry_Id = entry_Id;
+    }
+
+    public void setTitle(String title) {
       this.title = title;
   }
 
