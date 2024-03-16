@@ -16,29 +16,30 @@ class DiaryRepositoriesTest {
     }
 
     @Test
-     void testThatMyDefaultDiaryRepositoryIsZeroIfIDontSave() {
+    void testThatMyDefaultDiaryRepositoryIsZeroIfIDontSave() {
         DiaryRepositoriesImplement myRepositories = new DiaryRepositoriesImplement();
-        Diary myDairy = new Diary("userName","password");
+        Diary myDairy = new Diary("userName", "password");
         assertEquals(0L, myRepositories.count());
     }
+
     @Test
-    void testThatICanSaveOneDiary(){
+    void testThatICanSaveOneDiary() {
         DiaryRepositoriesImplement myRepositories = new DiaryRepositoriesImplement();
-        Diary myDairy = new Diary("userName","password");
+        Diary myDairy = new Diary("userName", "password");
         myRepositories.save(myDairy);
         assertEquals(1L, myRepositories.count());
     }
 
-   @Test
-   void testThatMyICanSaveMultipleDiary() {
+    @Test
+    void testThatMyICanSaveMultipleDiary() {
         DiaryRepositoriesImplement myRepositories = new DiaryRepositoriesImplement();
-       Diary myDairy = new Diary("userName","password");
-       Diary mohDiary = new Diary("Ayinla","password");
-       myRepositories.save(mohDiary);
-       myRepositories.save(myDairy);
-       assertEquals(2L, myRepositories.count());
+        Diary myDairy = new Diary("userName", "password");
+        Diary mohDiary = new Diary("Ayinla", "password");
+        myRepositories.save(mohDiary);
+        myRepositories.save(myDairy);
+        assertEquals(2L, myRepositories.count());
 
-   }
+    }
 
     @Test
     public void testSetAndGetId() {
@@ -57,9 +58,9 @@ class DiaryRepositoriesTest {
     @Test
     public void testFindDiaryByUsername() {
         DiaryRepositoriesImplement myRepositories = new DiaryRepositoriesImplement();
-        Diary myDairy = new Diary("userName","password");
+        Diary myDairy = new Diary("userName", "password");
         myRepositories.save(myDairy);
-        assertEquals(myDairy,myRepositories.findById("userName"));
+        assertEquals(myDairy, myRepositories.findById("userName"));
     }
 
     @Test
@@ -71,7 +72,7 @@ class DiaryRepositoriesTest {
     @Test
     public void testFindAllDiaries() {
         DiaryRepositoriesImplement myRepositories = new DiaryRepositoriesImplement();
-        Diary myDiary = new Diary("userName","password");
+        Diary myDiary = new Diary("userName", "password");
         Diary dayoDiary = new Diary("Adisa", "password");
         Diary mohDiary = new Diary("Ayinla", "password");
         Diary abikeDiary = new Diary("Abike", "password");
@@ -85,7 +86,71 @@ class DiaryRepositoriesTest {
         assertArrayEquals(expected, actual);
     }
 
+    @Test
+    public void testDeleteDiaryByUsername() {
+        DiaryRepositoriesImplement myRepositories = new DiaryRepositoriesImplement();
+        Diary myDairy = new Diary("userName", "password");
+        myRepositories.save(myDairy);
+        assertEquals(1L, myRepositories.count());
+        myRepositories.delete("userName");
+        assertEquals(0L, myRepositories.count());
 
+    }
+
+    @Test
+    public void testDeleteDiary() {
+        DiaryRepositoriesImplement myRepositories = new DiaryRepositoriesImplement();
+        Diary myDairy = new Diary("userName", "password");
+        myRepositories.save(myDairy);
+        assertEquals(1L, myRepositories.count());
+        myRepositories.delete(myDairy);
+        assertEquals(0L, myRepositories.count());
+    }
+
+
+    @Test
+    public void testDeleteNonexistentDiary() {
+        DiaryRepositoriesImplement myRepositories = new DiaryRepositoriesImplement();
+        Diary myDairy = new Diary("userName", "password");
+        Diary mohDiary = new Diary("Ayinla", "password");
+        myRepositories.save(myDairy);
+        assertEquals(1L, myRepositories.count());
+        myRepositories.delete(mohDiary);
+        assertEquals(1L, myRepositories.count());
+
+    }
+
+    @Test
+    public void testFindById_ReturnsTheDiaryFound(){
+        DiaryRepositoriesImplement myRepositories = new DiaryRepositoriesImplement();
+        Diary myDairy = new Diary("userName", "password");
+        Diary mohDiary = new Diary("Ayinla", "password");
+        myRepositories.save(myDairy);
+        myRepositories.save(mohDiary);
+        assertEquals(2L,myRepositories.count());
+        assertSame(myDairy, myRepositories.findById("userName"));
+        assertSame(mohDiary, myRepositories.findById("Ayinla"));
+
+    }
+
+    @Test
+    public void saveFourDiaries_DeleteTwoDiaryObjectTest(){
+        DiaryRepositoriesImplement myRepositories = new DiaryRepositoriesImplement();
+        Diary myDiary = new Diary("userName", "password");
+        Diary dayoDiary = new Diary("Adisa", "password");
+        Diary mohDiary = new Diary("Ayinla", "password");
+        Diary abikeDiary = new Diary("Abike", "password");
+        myRepositories.save(myDiary);
+        myRepositories.save(dayoDiary);
+        myRepositories.save(mohDiary);
+        myRepositories.save(abikeDiary);
+
+        assertEquals(4L,myRepositories.count());
+        myRepositories.delete(mohDiary);
+        myRepositories.delete(abikeDiary);
+        assertEquals(2L,myRepositories.count());
+
+    }
 
 
 
