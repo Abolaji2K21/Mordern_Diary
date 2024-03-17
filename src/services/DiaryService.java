@@ -1,9 +1,12 @@
 package services;
 
+import dtos.requests.LoginRequest;
 import dtos.requests.RegisterRequest;
 
 public interface DiaryService {
     void registerUser(RegisterRequest registerRequest);
-    void login(String username, String password);
+
+    boolean login(LoginRequest loginRequest);
+
     long getNumberOfUsers();
 }
