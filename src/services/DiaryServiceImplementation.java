@@ -23,7 +23,7 @@ public class DiaryServiceImplementation implements DiaryService {
 
             myRepository.save(user);
         } else {
-            throw new IllegalArgumentException("Registration validation failed");
+            throw new IllegalArgumentException("Registration failed");
         }
     }
 
@@ -54,7 +54,7 @@ public class DiaryServiceImplementation implements DiaryService {
     }
 
 
-        private boolean validateUsername(String username) {
+    private boolean validateUsername(String username) {
         return username != null && !username.isEmpty();
     }
 
