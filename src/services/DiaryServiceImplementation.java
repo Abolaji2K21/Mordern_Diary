@@ -12,7 +12,7 @@ public class DiaryServiceImplementation implements DiaryService {
         this.myRepository = myRepository;
     }
 
-    private Diary loggedInUser;
+//    private Diary loggedInUser;
 
     @Override
     public void registerUser(RegisterRequest registerRequest) {
