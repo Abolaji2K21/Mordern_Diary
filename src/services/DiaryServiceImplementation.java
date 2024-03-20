@@ -87,15 +87,19 @@ public class DiaryServiceImplementation implements DiaryService {
             throw new IllegalStateException("Diary is locked. You need to login to use this service.");
         }
 
-        Entry entry = new Entry();
-        entry.setTitle(request.getTitle());
-        entry.setBody(request.getBody());
-        entry.setUsername(request.getUsername().toLowerCase());
+        Entry entry = createEntryFromRequest(request);
 
         entryServices.save(entry);
 
     }
 
+    private static Entry createEntryFromRequest(CreateEntryRequest request) {
+        Entry entry = new Entry();
+        entry.setTitle(request.getTitle());
+        entry.setBody(request.getBody());
+        entry.setUsername(request.getUsername().toLowerCase());
+        return entry;
+    }
 
 
     @Override
@@ -109,15 +113,20 @@ public class DiaryServiceImplementation implements DiaryService {
             throw new IllegalStateException("Diary is locked. You need to login to use this service.");
         }
 
+        Entry entry = createEntryFromRequest(request);
+
+        entryServices.save(entry);
+
+
+    }
+
+    private static Entry createEntryFromRequest(UpdateEntryRequest request) {
         Entry entry = new Entry();
         entry.setTitle(request.getTitle());
         entry.setBody(request.getBody());
         entry.setUsername(request.getUserName().toLowerCase());
         entry.setEntry_Id(request.getId());
-
-        entryServices.save(entry);
-
-
+        return entry;
     }
 
     @Override
