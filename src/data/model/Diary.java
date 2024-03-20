@@ -7,7 +7,8 @@ public class Diary {
     private String username;
     private String password;
     private int id;
-    private final List<Entry> entries = new ArrayList<>();
+//    private final List<Entry> entries = new ArrayList<>();
+    private boolean isLocked = true;
 
 
     public Diary() {}
@@ -40,6 +41,12 @@ public class Diary {
         this.password = password;
     }
 
+    public boolean isLocked() {
+        return isLocked;
+    }
 
+    public void setLock(boolean status) {
+        isLocked = status;
+    }
 
 }

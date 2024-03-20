@@ -29,7 +29,6 @@ public class EntryRepositoryImplement implements EntryRepositories{
                 break;
             }
     }
-
     private void addIdTo(Entry entry) {
         entry.setEntry_Id(generateId());
     }
@@ -60,10 +59,11 @@ public class EntryRepositoryImplement implements EntryRepositories{
     }
 
     @Override
-    public Entry findByUsername(String username) {
+    public List<Entry> findByUsername(String username) {
+        List<Entry> foundEntries = new ArrayList<>();
         for(Entry entry : entries){
             if (entry.getUsername().equals(username)){
-                return entry;
+                return foundEntries;
             }
         }
         return null;
@@ -82,7 +82,6 @@ public class EntryRepositoryImplement implements EntryRepositories{
 
     @Override
     public void delete(Entry entry) {
-        Entry foundEntry = findByUsername(entry.getUsername());
-        entries.remove(foundEntry);
+        entries.remove(entry);
     }
 }

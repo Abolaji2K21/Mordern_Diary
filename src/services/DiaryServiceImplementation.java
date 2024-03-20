@@ -1,9 +1,9 @@
 package services;
 
 import data.model.Diary;
+import data.model.Entry;
 import data.repositories.DiaryRepositories;
-import dtos.requests.LoginRequest;
-import dtos.requests.RegisterRequest;
+import dtos.requests.*;
 
 public class DiaryServiceImplementation implements DiaryService {
     private final DiaryRepositories myRepository;
@@ -36,6 +36,64 @@ public class DiaryServiceImplementation implements DiaryService {
     @Override
     public long getNumberOfUsers() {
         return myRepository.count();
+    }
+
+    @Override
+    public Diary findDiaryBy(String username) {
+        Diary foundDiary = myRepository.findById(username.toLowerCase());
+        if (foundDiary == null) throw new IllegalArgumentException("User not found.");
+        return foundDiary;
+
+    }
+
+    @Override
+    public void logout(String username) {
+        Diary foundDiary = findDiaryBy(username.toLowerCase());
+        foundDiary.setLock(true);
+        myRepository.save(foundDiary);
+
+    }
+
+
+    @Override
+    public void removeUser(Diary myDiary,RemoveUserRequest request) {
+        Diary foundDiary = findDiaryBy(request.getUsername().toLowerCase());
+        if (myDiary.isLocked()) throw new IllegalStateException("You need to login to use this service.");
+
+        if (isPasswordIncorrect(foundDiary, request.getPassword())) throw new IllegalArgumentException("Password is incorrect.");
+
+        myRepository.delete(foundDiary);
+
+    }
+
+
+    private static boolean isPasswordIncorrect(Diary foundDiary, String password) {
+        return !foundDiary.getPassword().equals(password);
+    }
+
+
+    @Override
+    public void createEntryWith(Diary myDiary,CreateEntryRequest request) {
+        Diary foundDiary = findDiaryBy(request.getUsername().toLowerCase());
+        if (myDiary.isLocked()) throw new IllegalStateException("You need to login to use this service.");
+
+        Entry entry = new Entry();
+        entry.setTitle(request.getTitle());
+        entry.setBody(request.getBody());
+        entry.setUsername(request.getUsername().toLowerCase());
+
+        entryServices.save(entry);
+
+    }
+
+    @Override
+    public void updateEntryWith(UpdateEntryRequest request) {
+
+    }
+
+    @Override
+    public void deleteEntryBy(int id, String username) {
+
     }
 
     private boolean validateRegistration(RegisterRequest registerRequest) {

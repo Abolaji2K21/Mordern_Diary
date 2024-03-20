@@ -9,7 +9,7 @@ public interface EntryRepositories {
     Entry save(Entry myEntry);
     List<Entry> findAll();
     Entry findById(int entry_id);
-    Entry findByUsername(String username);
+    List<Entry> findByUsername(String username);
     long count();
     void delete(int entry_Id);
     void delete(Entry myEntry);
