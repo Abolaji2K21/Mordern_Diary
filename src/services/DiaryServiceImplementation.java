@@ -143,13 +143,13 @@ public class DiaryServiceImplementation implements DiaryService {
         if (myDiary.isLocked()) {
             throw new IllegalStateException("Diary is locked. You need to login to use this service.");
         }
-        List<Entry> entries = myDiary.getEntries();
-        if (entries.isEmpty()) {
-            throw new IllegalArgumentException("No entries found.");
-        }
+//        List<Entry> entries = myDiary.getEntries();
+//        if (entries.isEmpty()) {
+//            throw new IllegalArgumentException("No entries found.");
+//        }
 
         entryServices.deleteEntryBy(id);
-        myDiary.setEntries(entries);
+//        myDiary.setEntries(entries);
 
 
     }

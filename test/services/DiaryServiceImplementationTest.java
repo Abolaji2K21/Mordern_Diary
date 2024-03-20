@@ -288,7 +288,11 @@ class DiaryServiceImplementationTest {
 
         diaryService.deleteEntryBy(1, "PenIsUp");
 
+
         assertEquals(0, entryServices.getEntriesFor("PenIsUp").size());
     }
+
+    @Test
+    public void test
 
 }
