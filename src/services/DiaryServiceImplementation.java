@@ -9,18 +9,14 @@ import dtos.requests.*;
 import java.util.List;
 
 public class DiaryServiceImplementation implements DiaryService {
+        private boolean loginUser = false;
+        private static DiaryRepositories myRepository;
+        private static EntryServices entryServices;
 
-    private boolean loginUser = false;
-    private DiaryRepositories myRepository;
-    private EntryServices entryServices = new EntryServicesImplementation();
-
-    public DiaryServiceImplementation(DiaryRepositories myRepository) {
-        this.myRepository = myRepository;
-//        this.myEntryRepositories = myEntryRepositories;
-    }
-
-//    private Diary loggedInUser;
-
+        public DiaryServiceImplementation(DiaryRepositories myRepository, EntryServices entryServices) {
+            this.myRepository = myRepository;
+            this.entryServices = entryServices;
+        }
     @Override
     public void registerUser(RegisterRequest registerRequest) {
         if (validateRegistration(registerRequest)) {

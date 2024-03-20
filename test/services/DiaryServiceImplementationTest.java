@@ -3,6 +3,8 @@ package services;
 import data.model.Diary;
 import data.repositories.DiaryRepositories;
 import data.repositories.DiaryRepositoriesImplement;
+import data.repositories.EntryRepositories;
+import data.repositories.EntryRepositoryImplement;
 import dtos.requests.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,25 +13,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DiaryServiceImplementationTest {
 
-    private DiaryServiceImplementation diaryService;
-    private DiaryRepositories myRepository;
-    private EntryServices entryServices;
-    private RegisterRequest registerRequest;
-    private LoginRequest loginRequest;
-    private CreateEntryRequest createEntryRequest;
+        private DiaryServiceImplementation diaryService;
+        private DiaryRepositories myRepository;
+        private EntryRepositories entryRepositories;
+        private EntryServices entryServices;
 
-//    private RegisterRequest DiaryRequest;
-
-
-    @BeforeEach
-    public void initializationStep() {
-        myRepository = new DiaryRepositoriesImplement();
-        entryServices = new EntryServicesImplementation();
-        diaryService = new DiaryServiceImplementation(myRepository);
-//        DiaryRequest.setUsername("username");
-//        DiaryRequest.setPassword("password");
-
-    }
+        @BeforeEach
+        public void initializationStep() {
+            myRepository = new DiaryRepositoriesImplement();
+            entryRepositories = new EntryRepositoryImplement();
+            entryServices = new EntryServicesImplementation();
+            diaryService = new DiaryServiceImplementation(myRepository, entryServices);
+        }
 
     @Test
     public void testRegisterUser_Success() {
@@ -236,6 +231,7 @@ class DiaryServiceImplementationTest {
         loginRequest.setUsername("PenIsUp");
         loginRequest.setPassword("Satisfied");
         diaryService.login(loginRequest);
+        assertEquals(0, entryServices.getEntriesFor("PenIsUp").size());
 
         CreateEntryRequest createEntryRequest = new CreateEntryRequest();
         createEntryRequest.setUsername("PenIsUp");
@@ -243,6 +239,8 @@ class DiaryServiceImplementationTest {
         createEntryRequest.setBody("New Entry Body");
 
         diaryService.createEntryWith(createEntryRequest);
+        assertEquals(1, entryServices.getEntriesFor("penisup").size());
+
 
     }
 
@@ -266,6 +264,8 @@ class DiaryServiceImplementationTest {
         updateEntryRequest.setBody(" Pen Is Still Very Up As At 3:38Am");
 
         diaryService.updateEntryWith(updateEntryRequest);
+        assertEquals(1, entryServices.getEntriesFor("PenIsUp").size());
+
     }
 
     @Test

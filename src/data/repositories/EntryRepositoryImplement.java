@@ -62,11 +62,11 @@ public class EntryRepositoryImplement implements EntryRepositories{
     public List<Entry> findByUsername(String username) {
         List<Entry> foundEntries = new ArrayList<>();
         for(Entry entry : entries){
-            if (entry.getUsername().equals(username)){
-                return foundEntries;
+            if (entry.getUsername().equalsIgnoreCase(username)){
+                foundEntries.add(entry);
             }
         }
-        return null;
+        return foundEntries;
     }
 
     @Override

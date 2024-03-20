@@ -9,7 +9,7 @@ import java.util.List;
 
 public class EntryServicesImplementation implements EntryServices {
 
-    private static EntryRepositories entryRepositories = new EntryRepositoryImplement();
+    private EntryRepositories entryRepositories = new EntryRepositoryImplement();
 
 
     @Override
@@ -32,9 +32,7 @@ public class EntryServicesImplementation implements EntryServices {
 
     @Override
     public List<Entry> getEntriesFor(String username) {
-        List<Entry> entries = entryRepositories.findByUsername(username.toLowerCase());
-        if (entries.isEmpty()) throw new IllegalStateException("No entry found");
-        return entries;
+        return entryRepositories.findByUsername(username.toLowerCase());
     }
 
 }
