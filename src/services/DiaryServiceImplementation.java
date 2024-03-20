@@ -6,6 +6,8 @@ import data.repositories.DiaryRepositories;
 import data.repositories.EntryRepositories;
 import dtos.requests.*;
 
+import java.util.List;
+
 public class DiaryServiceImplementation implements DiaryService {
 
     private boolean loginUser = false;
@@ -59,9 +61,11 @@ public class DiaryServiceImplementation implements DiaryService {
     @Override
     public void logout(String username) {
         Diary foundDiary = findDiaryBy(username.toLowerCase());
-        foundDiary.setLock(true);
-        myRepository.save(foundDiary);
-        loginUser = false;
+        if (foundDiary != null) {
+            myRepository.save(foundDiary);
+            loginUser = false;
+        }
+
 
     }
 
@@ -143,7 +147,14 @@ public class DiaryServiceImplementation implements DiaryService {
         if (myDiary.isLocked()) {
             throw new IllegalStateException("Diary is locked. You need to login to use this service.");
         }
+        List<Entry> entries = myDiary.getEntries();
+        if (entries.isEmpty()) {
+            throw new IllegalArgumentException("No entries found.");
+        }
+
         entryServices.deleteEntryBy(id);
+        myDiary.setEntries(entries);
+
 
     }
 

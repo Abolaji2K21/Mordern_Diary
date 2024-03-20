@@ -3,10 +3,7 @@ package services;
 import data.model.Diary;
 import data.repositories.DiaryRepositories;
 import data.repositories.DiaryRepositoriesImplement;
-import dtos.requests.CreateEntryRequest;
-import dtos.requests.LoginRequest;
-import dtos.requests.LogoutRequest;
-import dtos.requests.RegisterRequest;
+import dtos.requests.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -182,7 +179,7 @@ class DiaryServiceImplementationTest {
 
 
     @Test
-    public void loginUserWithValidLoginsAndThenLogOut_Success(){
+    public void loginUserWithValidLoginsAndThenLogOut_Success() {
         RegisterRequest request = new RegisterRequest();
 
         request.setUsername("PenIsUp");
@@ -196,9 +193,102 @@ class DiaryServiceImplementationTest {
         assertTrue(diaryService.isLoggedIn());
 
         LogoutRequest logout = new LogoutRequest();
-        logout.setUsername("PenIsUp");
+//        logout.setUsername("PenIsUp");
         diaryService.logout("PenIsUp");
         assertFalse(diaryService.isLoggedIn());
 
     }
+
+    @Test
+    public void loginUserWithValidLoginsAndThenLogOutWithAnInvalidUserName_Failure() {
+        RegisterRequest request = new RegisterRequest();
+
+        request.setUsername("PenIsUp");
+        request.setPassword("Satisfied");
+        diaryService.registerUser(request);
+
+        LoginRequest login = new LoginRequest();
+        login.setUsername("PenIsUp");
+        login.setPassword("Satisfied");
+        diaryService.login(login);
+        assertTrue(diaryService.isLoggedIn());
+
+        LogoutRequest logout = new LogoutRequest();
+//        logout.setUsername("PenIsDown");
+        assertThrows(IllegalArgumentException.class, () -> diaryService.logout("PenIsDown"));
+        assertTrue(diaryService.isLoggedIn());
+
+    }
+
+    @Test
+    public void testLogoutWhenNotLoggedIn_Failure() {
+        assertThrows(IllegalArgumentException.class, () -> diaryService.logout("PenIsUp"));
+    }
+
+    @Test
+    public void testCreateEntryWithValidRequest_Success() {
+        RegisterRequest registerRequest = new RegisterRequest();
+        registerRequest.setUsername("PenIsUp");
+        registerRequest.setPassword("Satisfied");
+        diaryService.registerUser(registerRequest);
+
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername("PenIsUp");
+        loginRequest.setPassword("Satisfied");
+        diaryService.login(loginRequest);
+
+        CreateEntryRequest createEntryRequest = new CreateEntryRequest();
+        createEntryRequest.setUsername("PenIsUp");
+        createEntryRequest.setTitle("New Entry Title");
+        createEntryRequest.setBody("New Entry Body");
+
+        diaryService.createEntryWith(createEntryRequest);
+
+    }
+
+    @Test
+    public void testUpdateEntryWithValidRequest_Success() {
+        RegisterRequest registerRequest = new RegisterRequest();
+        registerRequest.setUsername("PenIsUp");
+        registerRequest.setPassword("Satisfied");
+        diaryService.registerUser(registerRequest);
+
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername("PenIsUp");
+        loginRequest.setPassword("Satisfied");
+        diaryService.login(loginRequest);
+
+
+        UpdateEntryRequest updateEntryRequest = new UpdateEntryRequest();
+        updateEntryRequest.setUserName("PenIsUp");
+        updateEntryRequest.setId(1);
+        updateEntryRequest.setTitle("Worries That Comes With Pen Been Up");
+        updateEntryRequest.setBody(" Pen Is Still Very Up As At 3:38Am");
+
+        diaryService.updateEntryWith(updateEntryRequest);
+    }
+
+    @Test
+    public void testDeleteEntryByValidIdAndUsername_Success() {
+        RegisterRequest registerRequest = new RegisterRequest();
+        registerRequest.setUsername("PenIsUp");
+        registerRequest.setPassword("Satisfied");
+        diaryService.registerUser(registerRequest);
+
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername("PenIsUp");
+        loginRequest.setPassword("Satisfied");
+        diaryService.login(loginRequest);
+
+        CreateEntryRequest createEntryRequest = new CreateEntryRequest();
+        createEntryRequest.setUsername("PenIsUp");
+        createEntryRequest.setTitle("New Entry Title");
+        createEntryRequest.setBody("New Entry Body");
+        diaryService.createEntryWith(createEntryRequest);
+
+        diaryService.deleteEntryBy(1, "PenIsUp");
+
+        assertEquals(0, entryServices.getEntriesFor("PenIsUp").size());
+    }
+
 }
