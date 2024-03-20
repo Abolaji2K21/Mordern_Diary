@@ -3,16 +3,14 @@ package services;
 import data.model.Entry;
 import data.repositories.DiaryRepositories;
 import data.repositories.EntryRepositories;
+import data.repositories.EntryRepositoryImplement;
 
 import java.util.List;
 
 public class EntryServicesImplementation implements EntryServices {
 
-    private final EntryRepositories entryRepositories;
+    private static EntryRepositories entryRepositories = new EntryRepositoryImplement();
 
-    public EntryServicesImplementation(EntryRepositories entryRepositories) {
-        this.entryRepositories = entryRepositories;
-    }
 
     @Override
     public void save(Entry entry) {

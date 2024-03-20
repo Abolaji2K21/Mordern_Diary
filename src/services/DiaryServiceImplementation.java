@@ -3,13 +3,16 @@ package services;
 import data.model.Diary;
 import data.model.Entry;
 import data.repositories.DiaryRepositories;
+import data.repositories.EntryRepositories;
 import dtos.requests.*;
 
 public class DiaryServiceImplementation implements DiaryService {
-    private final DiaryRepositories myRepository;
+    private DiaryRepositories myRepository;
+    private EntryServices entryServices = new EntryServicesImplementation();
 
     public DiaryServiceImplementation(DiaryRepositories myRepository) {
         this.myRepository = myRepository;
+//        this.myEntryRepositories = myEntryRepositories;
     }
 
 //    private Diary loggedInUser;
@@ -56,13 +59,13 @@ public class DiaryServiceImplementation implements DiaryService {
 
 
     @Override
-    public void removeUser(Diary myDiary,RemoveUserRequest request) {
-        Diary foundDiary = findDiaryBy(request.getUsername().toLowerCase());
+    public void removeUser(RemoveUserRequest request) {
+        Diary myDiary = findDiaryBy(request.getUsername().toLowerCase());
         if (myDiary.isLocked()) throw new IllegalStateException("You need to login to use this service.");
 
-        if (isPasswordIncorrect(foundDiary, request.getPassword())) throw new IllegalArgumentException("Password is incorrect.");
+        if (isPasswordIncorrect(myDiary, request.getPassword())) throw new IllegalArgumentException("Password is incorrect.");
 
-        myRepository.delete(foundDiary);
+        myRepository.delete(myDiary);
 
     }
 
@@ -73,9 +76,16 @@ public class DiaryServiceImplementation implements DiaryService {
 
 
     @Override
-    public void createEntryWith(Diary myDiary,CreateEntryRequest request) {
-        Diary foundDiary = findDiaryBy(request.getUsername().toLowerCase());
-        if (myDiary.isLocked()) throw new IllegalStateException("You need to login to use this service.");
+    public void createEntryWith(CreateEntryRequest request) {
+        Diary myDiary = findDiaryBy(request.getUsername().toLowerCase());
+
+//        if (myDiary == null) {
+//            throw new IllegalArgumentException("Diary does not exist.");
+//        }
+
+        if (myDiary.isLocked()) {
+            throw new IllegalStateException("Diary is locked. You need to login to use this service.");
+        }
 
         Entry entry = new Entry();
         entry.setTitle(request.getTitle());
@@ -86,13 +96,37 @@ public class DiaryServiceImplementation implements DiaryService {
 
     }
 
+
+
     @Override
     public void updateEntryWith(UpdateEntryRequest request) {
+        Diary myDiary = findDiaryBy(request.getUserName().toLowerCase());
+
+//        if (myDiary == null) {
+//            throw new IllegalArgumentException("Diary does not exist.");
+//        }
+        if (myDiary.isLocked()) {
+            throw new IllegalStateException("Diary is locked. You need to login to use this service.");
+        }
+
+        Entry entry = new Entry();
+        entry.setTitle(request.getTitle());
+        entry.setBody(request.getBody());
+        entry.setUsername(request.getUserName().toLowerCase());
+        entry.setEntry_Id(request.getId());
+
+        entryServices.save(entry);
+
 
     }
 
     @Override
     public void deleteEntryBy(int id, String username) {
+        Diary myDiary = findDiaryBy(username.toLowerCase());
+        if (myDiary.isLocked()) {
+            throw new IllegalStateException("Diary is locked. You need to login to use this service.");
+        }
+        entryServices.deleteEntryBy(id);
 
     }
 
