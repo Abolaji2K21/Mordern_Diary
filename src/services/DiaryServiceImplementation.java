@@ -7,6 +7,8 @@ import data.repositories.EntryRepositories;
 import dtos.requests.*;
 
 public class DiaryServiceImplementation implements DiaryService {
+
+    private boolean loginUser = false;
     private DiaryRepositories myRepository;
     private EntryServices entryServices = new EntryServicesImplementation();
 
@@ -33,7 +35,12 @@ public class DiaryServiceImplementation implements DiaryService {
 
     @Override
     public boolean login(LoginRequest loginRequest) {
-        return validateLogin(loginRequest);
+
+        boolean isValidLogin = validateLogin(loginRequest);
+        if (isValidLogin) {
+            loginUser = true;
+        }
+        return isValidLogin;
     }
 
     @Override
@@ -54,6 +61,7 @@ public class DiaryServiceImplementation implements DiaryService {
         Diary foundDiary = findDiaryBy(username.toLowerCase());
         foundDiary.setLock(true);
         myRepository.save(foundDiary);
+        loginUser = false;
 
     }
 
@@ -165,5 +173,9 @@ public class DiaryServiceImplementation implements DiaryService {
 
     private boolean validateExistingUsername(String username) {
         return myRepository.findById(username) == null;
+    }
+
+    public boolean isLoggedIn() {
+        return loginUser;
     }
 }
