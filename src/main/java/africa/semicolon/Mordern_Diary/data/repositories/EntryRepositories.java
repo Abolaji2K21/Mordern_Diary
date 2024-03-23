@@ -1,0 +1,21 @@
+package africa.semicolon.Mordern_Diary.data.repositories;
+
+import africa.semicolon.Mordern_Diary.data.model.Entry;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface EntryRepositories extends MongoRepository<Entry, String> {
+    List<Entry> findByUsername(String username);
+//    List<Entry> findByUsername(String username);
+//    Entry save(Entry myEntry);
+//    List<Entry> findAll();
+//    Entry findById(int entry_id);
+//    List<Entry> findByUsername(String username);
+//    long count();
+//    void delete(int entry_Id);
+//    void delete(Entry myEntry);
+
+}
