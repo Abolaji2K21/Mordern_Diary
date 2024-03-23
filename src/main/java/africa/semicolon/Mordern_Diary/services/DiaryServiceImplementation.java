@@ -8,6 +8,7 @@ import africa.semicolon.Mordern_Diary.dtos.requests.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -51,7 +52,7 @@ public class DiaryServiceImplementation implements DiaryService {
 
     @Override
     public Diary findDiaryBy(String username) {
-        Optional<Diary> foundDiary = myRepository.findById(username.toLowerCase());
+        Optional<Diary> foundDiary = myRepository.findByUsername(username.toLowerCase());
         if (foundDiary.isEmpty()) {
             throw new IllegalArgumentException("User not found.");
         }
@@ -62,8 +63,8 @@ public class DiaryServiceImplementation implements DiaryService {
 
     @Override
     public void logout(String username) {
-        Diary foundDiary = findDiaryBy(username.toLowerCase());
-        if (foundDiary != null) {
+        Optional<Diary> foundDiary = myRepository.findById(username.toLowerCase());
+        if (foundDiary.isPresent()) {
             loginUser = false;
         }
     }
@@ -193,6 +194,12 @@ public class DiaryServiceImplementation implements DiaryService {
 
     public boolean userExists(String username) {
         return myRepository.findByUsername(username).isPresent();
+    }
+
+    @Override
+    public List<Diary> getAllDiaries() {
+        System.out.println(myRepository.findAll().size() + " ==============");
+        return myRepository.findAll();
     }
 
     public boolean isLoggedIn() {

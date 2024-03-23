@@ -5,6 +5,8 @@ import africa.semicolon.Mordern_Diary.dtos.requests.LoginRequest;
 import africa.semicolon.Mordern_Diary.dtos.requests.RegisterRequest;
 import africa.semicolon.Mordern_Diary.dtos.requests.RemoveUserRequest;
 
+import java.util.List;
+
 public interface DiaryService {
     void registerUser(RegisterRequest registerRequest);
     void login(LoginRequest loginRequest);
@@ -18,6 +20,8 @@ public interface DiaryService {
     void removeUser(RemoveUserRequest request);
 
     boolean userExists(String username);
+
+    List<Diary> getAllDiaries();
 
 
 //    void removeUser(RemoveUserRequest request);

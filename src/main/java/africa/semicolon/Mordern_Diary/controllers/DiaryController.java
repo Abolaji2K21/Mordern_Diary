@@ -1,14 +1,15 @@
 package africa.semicolon.Mordern_Diary.controllers;
 
+import africa.semicolon.Mordern_Diary.data.model.Diary;
 import africa.semicolon.Mordern_Diary.dtos.requests.LoginRequest;
+import africa.semicolon.Mordern_Diary.dtos.requests.LogoutRequest;
 import africa.semicolon.Mordern_Diary.dtos.requests.RegisterRequest;
 import africa.semicolon.Mordern_Diary.services.DiaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/diary")
@@ -40,15 +41,20 @@ public class DiaryController {
         }
     }
 
-    public String logout(String username) {
+    @PostMapping("/logout")
+    public String logout(@RequestBody LogoutRequest request){
         try {
-            diaryServices.logout(username);
+            diaryServices.logout(request.getUsername());
             return "logout successful";
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             return e.getMessage();
         }
     }
 
+    @GetMapping
+    public List<Diary> test() {
+        return diaryServices.getAllDiaries();
+    }
 //    public String removeUserWith(RemoveUserRequest request) {
 //        try {
 //            diaryServices.removeUser(request);
