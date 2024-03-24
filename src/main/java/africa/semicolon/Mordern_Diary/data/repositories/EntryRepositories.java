@@ -9,6 +9,8 @@ import java.util.List;
 @Repository
 public interface EntryRepositories extends MongoRepository<Entry, String> {
     List<Entry> findByUsername(String username);
+    List<Entry> findByTitleAndUsername(String title, String username);
+
 //    List<Entry> findByUsername(String username);
 //    Entry save(Entry myEntry);
 //    List<Entry> findAll();

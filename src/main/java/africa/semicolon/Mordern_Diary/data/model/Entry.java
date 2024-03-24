@@ -16,6 +16,6 @@ public class Entry {
     private String body;
     private LocalDateTime dateCreated = LocalDateTime.now();
     private String username;
-
+    private boolean deleted;
 
 }

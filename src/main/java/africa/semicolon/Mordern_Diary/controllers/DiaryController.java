@@ -1,12 +1,11 @@
 package africa.semicolon.Mordern_Diary.controllers;
 
 import africa.semicolon.Mordern_Diary.data.model.Diary;
-import africa.semicolon.Mordern_Diary.dtos.requests.LoginRequest;
-import africa.semicolon.Mordern_Diary.dtos.requests.LogoutRequest;
-import africa.semicolon.Mordern_Diary.dtos.requests.RegisterRequest;
+import africa.semicolon.Mordern_Diary.dtos.requests.*;
 import africa.semicolon.Mordern_Diary.services.DiaryService;
+import africa.semicolon.Mordern_Diary.services.EntryServices;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,10 +15,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DiaryController {
     private final DiaryService diaryServices;
+    private final EntryServices entryServices;
 
-//    public DiaryController(DiaryRepositories diaryRepositories, EntryServices entryServices) {
-//        this.diaryServices = new DiaryServiceImplementation(diaryRepositories, entryServices);
-//    }
 
     @PostMapping
     public String registerUser(@RequestBody RegisterRequest request) {
@@ -52,33 +49,36 @@ public class DiaryController {
     }
 
     @GetMapping
-    public List<Diary> test() {
+    public List<Diary> getAllDiaries() {
         return diaryServices.getAllDiaries();
     }
-//    public String removeUserWith(RemoveUserRequest request) {
-//        try {
-//            diaryServices.removeUser(request);
-//            return "removed successfully";
-//        } catch (IllegalStateException e) {
-//            return e.getMessage();
-//        }
-//    }
-//
-//    public String createEntry(CreateEntryRequest request) {
-//        try {
-//            diaryServices.createEntryWith(request);
-//            return "created successfully";
-//        } catch (IllegalStateException e) {
-//            return e.getMessage();
-//        }
-//    }
-//
-//    public String updateEntry(UpdateEntryRequest request) {
-//        try {
-//            diaryServices.updateEntryWith(request);
-//            return "updated successfully";
-//        } catch (IllegalStateException e) {
-//            return e.getMessage();
-//        }
-//    }
+    @PostMapping("/remove-user")
+    public String removeUserWith(@RequestBody RemoveUserRequest request) {
+        try {
+            diaryServices.removeUser(request);
+            return "removed successfully";
+        } catch (IllegalArgumentException e) {
+            return e.getMessage();
+        }
+    }
+
+    @PostMapping("/create-entry")
+    public String createEntry(@RequestBody CreateEntryRequest request) {
+        try {
+            entryServices.createEntry(request);
+            return "created successfully";
+        } catch (IllegalArgumentException e) {
+            return e.getMessage();
+        }
+    }
+
+    @PostMapping("/update-entry")
+    public String updateEntry(@RequestBody UpdateEntryRequest request) {
+        try {
+            entryServices.updateEntryWith(request);
+            return "updated successfully";
+        } catch (IllegalArgumentException e) {
+            return e.getMessage();
+        }
+    }
 }
