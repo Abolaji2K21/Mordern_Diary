@@ -1,6 +1,7 @@
 package africa.semicolon.Mordern_Diary.controllers;
 
 import africa.semicolon.Mordern_Diary.data.model.Diary;
+import africa.semicolon.Mordern_Diary.data.model.Entry;
 import africa.semicolon.Mordern_Diary.dtos.requests.*;
 import africa.semicolon.Mordern_Diary.services.DiaryService;
 import africa.semicolon.Mordern_Diary.services.EntryServices;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 //import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+//import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,7 +25,7 @@ public class DiaryController {
         try {
             diaryServices.registerUser(request);
             return "registration successful";
-        } catch (IllegalStateException e) {
+        } catch (RuntimeException e) {
             return e.getMessage();
         }
     }
@@ -33,7 +35,7 @@ public class DiaryController {
         try {
             diaryServices.login(request);
             return "login successful";
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             return e.getMessage();
         }
     }
@@ -43,7 +45,7 @@ public class DiaryController {
         try {
             diaryServices.logout(request.getUsername());
             return "logout successful";
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             return e.getMessage();
         }
     }
@@ -57,7 +59,7 @@ public class DiaryController {
         try {
             diaryServices.removeUser(request);
             return "removed successfully";
-        } catch (IllegalArgumentException e) {
+        } catch (RuntimeException e) {
             return e.getMessage();
         }
     }
@@ -67,7 +69,7 @@ public class DiaryController {
         try {
             entryServices.createEntry(request);
             return "created successfully";
-        } catch (IllegalArgumentException e) {
+        } catch (RuntimeException e) {
             return e.getMessage();
         }
     }
@@ -77,8 +79,14 @@ public class DiaryController {
         try {
             entryServices.updateEntryWith(request);
             return "updated successfully";
-        } catch (IllegalArgumentException e) {
+        } catch (RuntimeException e) {
             return e.getMessage();
         }
     }
+
+    @GetMapping("/entries/{username}")
+    public List<Entry> getEntriesFor(@PathVariable String username) {
+        return entryServices.getEntriesFor(username);
+    }
+
 }
