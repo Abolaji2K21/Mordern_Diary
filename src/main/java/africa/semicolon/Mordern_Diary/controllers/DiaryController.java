@@ -6,11 +6,13 @@ import africa.semicolon.Mordern_Diary.dtos.requests.*;
 import africa.semicolon.Mordern_Diary.services.DiaryService;
 import africa.semicolon.Mordern_Diary.services.EntryServices;
 import lombok.RequiredArgsConstructor;
-//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
 
 //import java.util.ArrayList;
-import java.util.List;
+//import org.springframework.beans.factory.annotation.Autowired;
+
 
 @RestController
 @RequestMapping("/api/diary")

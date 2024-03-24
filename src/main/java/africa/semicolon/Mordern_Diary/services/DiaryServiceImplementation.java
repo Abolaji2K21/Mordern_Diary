@@ -19,12 +19,19 @@ public class DiaryServiceImplementation implements DiaryService {
 
     @Override
     public void registerUser(RegisterRequest registerRequest) {
-        Diary user = new Diary();
-        user.setUsername(registerRequest.getUsername());
-        user.setPassword(registerRequest.getPassword());
+            String username = registerRequest.getUsername();
 
-        myRepository.save(user);
-    }
+        Optional<Diary> existingDiary = myRepository.findByUsername(username);
+        if (existingDiary.isPresent()) {
+            throw new IllegalArgumentException("Username already exists");
+        }
+
+            Diary user = new Diary();
+            user.setUsername(username);
+            user.setPassword(registerRequest.getPassword());
+
+            myRepository.save(user);
+        }
 
     @Override
     public void login(LoginRequest loginRequest) {
@@ -40,13 +47,15 @@ public class DiaryServiceImplementation implements DiaryService {
 
     @Override
     public Diary findDiaryBy(String username) {
-        Optional<Diary> foundDiary = myRepository.findByUsername(username.toLowerCase());
+        username = username.toLowerCase();
+        Optional<Diary> foundDiary = myRepository.findByUsername(username);
         if (foundDiary.isEmpty()) {
             throw new IllegalArgumentException("User not found.");
         }
 
         return foundDiary.get();
     }
+
 
     @Override
     public void logout(String username) {
