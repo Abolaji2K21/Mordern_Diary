@@ -9,13 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Document
 public class Diary {
-    @Id
+
     private String id;
+    @Id
     private String username;
     private String password;
     private boolean lock ;
     private boolean deleted;
+    private List<Entry> entries;
+
 
 
 }

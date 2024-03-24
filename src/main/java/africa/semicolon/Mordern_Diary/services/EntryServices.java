@@ -6,12 +6,15 @@ import africa.semicolon.Mordern_Diary.dtos.requests.UpdateEntryRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface EntryServices {
     void createEntry(CreateEntryRequest createEntryRequest);
     void updateEntryWith(UpdateEntryRequest request);
-    void deleteEntryBy(String title, String username);
+//    void deleteEntryBy(String title, String username);
+
+    void deleteEntryBy(UpdateEntryRequest request);
 
     List<Entry> getEntriesFor(String username);
 

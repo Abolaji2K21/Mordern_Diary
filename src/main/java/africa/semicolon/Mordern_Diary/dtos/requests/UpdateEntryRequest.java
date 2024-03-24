@@ -6,11 +6,11 @@ import lombok.Data;
 
 @Data
 public class UpdateEntryRequest {
-    @NotEmpty(message = "Username cannot be empty")
-    @NotNull(message = "Username cannot be null")
+//    @NotEmpty(message = "Username cannot be empty")
+//    @NotNull(message = "Username cannot be null")
     private String userName;
     private String title;
     private String body;
-    private int id;
+    private String id;
 
 }

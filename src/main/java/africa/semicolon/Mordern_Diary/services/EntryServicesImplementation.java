@@ -1,5 +1,6 @@
 package africa.semicolon.Mordern_Diary.services;
 
+import africa.semicolon.Mordern_Diary.data.model.Diary;
 import africa.semicolon.Mordern_Diary.data.model.Entry;
 import africa.semicolon.Mordern_Diary.data.repositories.EntryRepositories;
 import africa.semicolon.Mordern_Diary.dtos.requests.CreateEntryRequest;
@@ -8,24 +9,25 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class EntryServicesImplementation implements EntryServices {
-
-    private final EntryRepositories entryRepositories;
-
-    private final DiaryService diaryService;
+    @Autowired
+    private EntryRepositories entryRepositories;
+    @Autowired
+    private DiaryService diaryService;
 
     @Override
     public void createEntry(CreateEntryRequest createEntryRequest) {
-        if (diaryService.findDiaryBy(createEntryRequest.getUsername()) != null) {
+        Diary diary = diaryService.findDiaryBy(createEntryRequest.getUsername().toLowerCase());
+        if (diary != null) {
             Entry entry = new Entry();
             entry.setTitle(createEntryRequest.getTitle());
             entry.setBody(createEntryRequest.getBody());
-            entry.setUsername(createEntryRequest.getUsername());
+            entry.setUsername(createEntryRequest.getUsername().toLowerCase());
             entryRepositories.save(entry);
         } else {
             throw new IllegalArgumentException("User does not exist.");
@@ -34,26 +36,30 @@ public class EntryServicesImplementation implements EntryServices {
 
     @Override
     public void updateEntryWith(UpdateEntryRequest request) {
-        List<Entry> foundEntries = entryRepositories.findByTitleAndUsername(request.getTitle(), request.getUserName());
-        if (!foundEntries.isEmpty()) {
-            for (Entry entry : foundEntries) {
-                entry.setTitle(request.getTitle());
-                entry.setBody(request.getBody());
-                entryRepositories.save(entry);
-            }
+        Optional<Entry> foundEntry = entryRepositories.findById(request.getId());
+        if (foundEntry.isPresent()) {
+            Entry entry = foundEntry.get();
+            entry.setTitle(request.getTitle());
+            entry.setBody(request.getBody());
+            entryRepositories.save(entry);
         } else {
             throw new IllegalArgumentException("Entry not found.");
         }
     }
 
+//    @Override
+//    public void deleteEntryBy(String title, String username) {
+//
+//    }
+
+
     @Override
-    public void deleteEntryBy(String title, String username) {
-        List<Entry> entriesToDelete = entryRepositories.findByTitleAndUsername(title, username);
-        if (!entriesToDelete.isEmpty()) {
-            for (Entry entry : entriesToDelete) {
-                entry.setDeleted(true);
-                entryRepositories.save(entry);
-            }
+    public void deleteEntryBy(UpdateEntryRequest request) {
+        Optional<Entry> foundEntry = entryRepositories.findById(request.getId());
+        if (foundEntry.isPresent()) {
+            Entry myEntry = foundEntry.get();
+            myEntry.setDeleted(true);
+            entryRepositories.save(myEntry);
         } else {
             throw new IllegalArgumentException("Entry not found.");
         }
@@ -61,15 +67,24 @@ public class EntryServicesImplementation implements EntryServices {
 
     @Override
     public List<Entry> getEntriesFor(String username) {
-        List<Entry> entries = entryRepositories.findByUsername(username);
-        List<Entry> nonDeletedEntries = new ArrayList<>();
-
-        for (Entry entry : entries) {
-            if (!entry.isDeleted()) {
-                nonDeletedEntries.add(entry);
-            }
-        }
-
-        return nonDeletedEntries;
+        boolean deleted = false;
+        return entryRepositories.findByUsernameAndDeleted(username,deleted );
     }
+//        Optional<Entry> entries = entryRepositories.findByUsername(username);
+//        List<Entry> nonDeletedEntries = new ArrayList<>();
+//
+//        if (entries.isPresent()) {
+//            Entry myEntry = entries.get();
+//            List<Entry> diaryEntries = myEntry.getEntries();
+//            for (Entry entry : diaryEntries) {
+//                if (!entry.isDeleted()) {
+//                    nonDeletedEntries.add(entry);
+//
+//                }
+//            }
+//
+//        }
+//        return nonDeletedEntries;
+//
+//    }
 }

@@ -8,6 +8,7 @@ import africa.semicolon.Mordern_Diary.services.EntryServices;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 
 
 //import java.util.ArrayList;
@@ -86,9 +87,23 @@ public class DiaryController {
         }
     }
 
-    @GetMapping("/entries/{username}")
-    public List<Entry> getEntriesFor(@PathVariable String username) {
+    @GetMapping("/entries")
+    public List<Entry> getEntriesFor(@RequestParam String username) {
         return entryServices.getEntriesFor(username);
     }
+
+
+    @PostMapping("/delete-entry")
+    public String deleteEntry(@RequestBody UpdateEntryRequest request) {
+        try {
+            entryServices.deleteEntryBy(request);
+            return ("Entry deleted successfully.");
+        } catch (RuntimeException e) {
+            return e.getMessage();
+        }
+    }
+
+
+
 
 }
