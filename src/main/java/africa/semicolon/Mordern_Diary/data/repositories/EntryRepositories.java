@@ -10,7 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface EntryRepositories extends MongoRepository<Entry, String> {
-
     List<Entry> findByUsernameAndDeleted(String username, boolean deleted);
 
 //    List<Entry> findByUsername(String username);
