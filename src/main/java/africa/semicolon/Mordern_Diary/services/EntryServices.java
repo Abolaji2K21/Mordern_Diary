@@ -12,10 +12,7 @@ import java.util.Optional;
 public interface EntryServices {
     void createEntry(CreateEntryRequest createEntryRequest);
     void updateEntryWith(UpdateEntryRequest request);
-//    void deleteEntryBy(String title, String username);
-
     void deleteEntryBy(UpdateEntryRequest request);
-
     List<Entry> getEntriesFor(String username);
 
 
